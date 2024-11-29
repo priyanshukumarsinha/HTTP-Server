@@ -13,7 +13,7 @@ Steps to cover :
 
 ![alt text](image-1.png)
 
-Let us move to Step 1
+Let us move to **Step 1**
 ## How to Create a Socket in C
 
 Before moving forward, let us understand what a "socket" is?
@@ -53,3 +53,30 @@ The value of sockfd (the socket file descriptor) depends on the success or failu
 More details about the Protocol part:
 ![alt text](image-2.png)
 
+Now Let us move to **STEP 2** 
+## Binding the socket to an address
+
+Binding a socket to an address means associating it with a specific IP address and port so it can send and receive data. This is especially important for server sockets, as clients need to know where to connect.
+
+So first we need to set up the address structure.
+The *sockaddr_in* structure is used to specify the socket's address properties, such as IP address, port, and address family.
+
+To define and initialize the sockaddr_in structure:
+```C
+struct sockaddr_in server_addr;
+
+memset(&server_addr, 0, sizeof(server_addr)); //This clears the structure
+// Before initializing the structure, clear its memory to avoid leftover garbage values that might cause undefined behavior
+
+server_addr.sin_family = AF_INET;            // IPv4
+server_addr.sin_port = htons(PORT);          // Port number (use htons for network byte order)
+
+// To Bind to a Specific IP Address
+// server_addr.sin_addr.s_addr = inet_addr("127.0.0.1"); 
+
+// To Bind to All Available Interfaces
+server_addr.sin_addr.s_addr = INADDR_ANY;    // IP address (localhost in this case)
+// INADDR_ANY allows the socket to listen on all available network interfaces 
+// (e.g., 127.0.0.1 for localhost and any other assigned IP addresses).
+
+```
