@@ -18,11 +18,6 @@ int accept_connections(int server_fd, struct sockaddr *address){
 
     // Accept the connection
     new_socket = accept(server_fd, address, &address_len);
-    if(new_socket < 0){
-        perror("accept");
-        printf("file descriptro : %d\n", server_fd);
-        exit(EXIT_FAILURE);
-    }
 
     printf("New connection Established : %d\n", new_socket);
     return new_socket;

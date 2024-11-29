@@ -1,6 +1,11 @@
 # HTTP-Server
+HTTP (Hypertext Transfer Protocol) is the foundation of data communication on the World Wide Web.
 
-Steps to cover : 
+It is an application layer protocol that allows web clients (such as browsers) and servers to communicate with each other.
+
+HTTP is a stateless protocol, meaning each request from a client to the server is independent and contains all the necessary information for the server to understand it.
+
+## Steps to cover for Socket Programming: 
 1. Create a socket
 2. Bind the socket to an address
 3. Listen on the address
@@ -191,3 +196,49 @@ Closing the socket helps release system resources that were allocated for that c
 In the context of TCP:
 - The client and server maintain a connection while they exchange data.
 - Once the data exchange is complete, the server closes the connection (or the client might close the connection).
+
+
+Now we are done with the **Socket Programming** part of it.
+Let us Now move to **HTTP** Implementation.
+
+HTTP follows a request-response model, where the client sends a request and the server sends back a response.
+
+Each HTTP request/response consists of a series of components, such as headers, body, and sometimes status codes.
+
+Some important Points about HTTP:
+- The client sends a request to the server asking for some resource.
+- The server processes the request and sends back a response with the requested resource (or an error).
+- Each HTTP request is independent. The server does not retain any knowledge of previous requests, making it a stateless protocol.
+- HTTP defines several methods (also known as verbs) that specify the desired action on the resource:
+    - GET: Retrieves data from the server (e.g., a webpage).
+    - POST: Sends data to the server to create or modify a resource (e.g., form submission).
+    - PUT: Replaces the current representation of the resource with the provided data.
+    - DELETE: Removes the specified resource.
+    - HEAD: Same as GET, but without the response body (only headers).
+    - OPTIONS: Describes the communication options for the target resource.
+    - PATCH: Partially modifies a resource.
+
+- HTTP responses contain a status code that indicates the result of the request:
+    - 200 OK: The request was successful, and the server returned the requested data.
+    - 404 Not Found: The server cannot find the requested resource.
+    - 500 Internal Server Error: The server encountered an error while processing the request.
+
+- HTTP headers provide additional information about the request or response. They are key-value pairs. Common headers include:
+    - Content-Type: Specifies the media type of the resource (e.g., text/html, application/json).
+    - Content-Length: Specifies the size of the response body.
+    - Host: Specifies the host and port of the server (required for HTTP/1.1).
+    - User-Agent: Describes the client making the request (e.g., browser type).
+
+- The body of an HTTP message carries the data being transmitted. It is optional in a request (for example, a GET request does not need a body), but is used in responses (such as the HTML content or JSON data).
+
+## How HTTP Works: Request-Response Cycle
+1. Client Makes a **Request**: The client (browser or application) sends a request to the server. The request consists of:
+    - Request line: Contains the HTTP method, the URI (Uniform Resource Identifier), and the HTTP version.
+    - Headers: Provide metadata about the request (e.g., which browser is making the request, what type of content is being requested).
+    - Body: Contains data sent by the client (only for methods like POST, PUT, PATCH).
+2. Server **Processes the Request**: The server processes the request based on the HTTP method and URI. It checks the headers for any additional information (like authentication or content type) and retrieves the appropriate resource (file, data, etc.).
+3. Server Sends a **Response**: The server sends a response to the client, consisting of:
+    - Status line: Contains the HTTP version, status code, and reason phrase.
+    - Headers: Provide metadata about the response (e.g., content type, content length).
+    - Body: Contains the actual resource or data being requested.
+

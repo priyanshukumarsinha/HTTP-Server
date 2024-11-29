@@ -42,21 +42,24 @@ int main(){
     while(1){
         // The server can accept incoming connections here 
         int new_socket = accept_connections(sockfd, (struct sockaddr *)&server_addr);
+        if(new_socket < 0){
+            printf("Error while accepting connections. Retrying ... \n");
+            continue;
+        }
 
         // read data from the client
-        read_data_from_client(new_socket, BUFFER_SIZE);
+        int req = read_data_from_client(new_socket, BUFFER_SIZE);
 
         // Respond
         char* msg = "Hello from server";
-        respond(new_socket, msg);
+        respond(new_socket, msg, req);
 
-        // Close the socket after testing
-        printf("Closing the Server ...\n");
-        close_connection(sockfd);
     }
 
-    // closing the listening socket
-    close(sockfd);
+    // Close the socket after testing
+    printf("Closing the Server ...\n");
+    close_connection(sockfd);
+
     return 0;
 
 }
