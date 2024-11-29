@@ -118,9 +118,27 @@ When a server calls listen(), it transitions the socket into a *passive mode*, w
 
 After calling listen(), the server is effectively saying, *"I'm ready to accept incoming connections."* It waits for clients to attempt to connect to the server.
 
+Now Lets us move to **STEP 4**
+## Block on Accept until a connection is made
+So you might be wonder What does *"block on accept until a connection is made"* mean?
 
+Blocking means that the server will wait for something to happen before it can continue its work. In this case, the server is waiting for a client to connect to it.
 
-Now we can test the server and start it to listen on the specified PORT.
-So lets create a server.c file and add all these functionalities to the server file.
+When the server calls the accept() function, it enters a waiting state (or "blocks"). It will stay in this state until a client connects. Once a client tries to connect, accept() will return, and the server can start communicating with that client.
+
+In simpler words,
+Imagine you are a receptionist at an office. You are waiting for visitors (clients) to walk up to the desk. You don't keep walking around looking for people—you just wait until someone comes up to you. Once a person arrives, you can start talking to them (communicating).
+
+In the same way, the server is "waiting" for a client to "arrive" before it can start doing anything.
+
+- accept() is used after the server has called listen() on the socket. It accepts an incoming connection request from a client.
+- The server blocks at the accept() call until a client attempts to connect.
+- Once a connection request is received, the accept() function returns a new socket descriptor that represents the communication channel with the client.
+- The server can then use this new socket descriptor to send and receive data with the client.
+
+```C
+accept(server_fd, (struct sockaddr*)&address,&addrlen)
+```
+
 
 

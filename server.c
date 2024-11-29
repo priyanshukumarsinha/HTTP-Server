@@ -10,6 +10,7 @@
 #include "add_str.c"
 #include "bind_socket.c"
 #include "listen_PORT.c"
+#include "accept_connections.c"
 
 const int PORT = 8080;
 const int backlog = 3;
@@ -28,7 +29,8 @@ int main(){
     // Start listening for incoming connections
     listen_PORT(PORT, sockfd, backlog);
 
-    // The server can accept incoming connections here (not implemented yet)
+    // The server can accept incoming connections here 
+    accept_connections(sockfd, (struct sockaddr *)&server_addr);
 
     // Close the socket after testing
     printf("Closing the Server ...\n");
