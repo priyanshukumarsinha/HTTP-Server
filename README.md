@@ -89,13 +89,38 @@ server_addr.sin_addr.s_addr = INADDR_ANY;    // IP address (localhost in this ca
 Once the socket is created and the address structure (sockaddr_in) is defined, the next step is to bind the socket to a specific address and port. This is done using the bind() function.
 
 The function prototype is:
-````C
+```C
 int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+
 ```
 
 Here,
 - **sockfd**: The socket file descriptor returned from the socket() function. This identifies the socket you want to bind.
 - **addr**: A pointer to a struct sockaddr (usually struct sockaddr_in for IPv4) that contains the address to bind the socket to. This structure typically includes the IP address and port number.
 - **addrlen**: The size of the address structure (struct sockaddr_in), which is typically sizeof(struct sockaddr_in). This tells the bind() function how much memory to read when accessing the address information.
+
+Now Lets Move to **STEP 3**
+## Listen on the Address
+
+Once a socket is bound to an address and port using the bind() function, the next step is to prepare the socket to accept incoming connections. This is done using the listen() function.
+
+It can be done using:
+```C
+int listen(int sockfd, int backlog);
+```
+- It puts the server socket in a passive mode, where it waits for the client to approach the server to make a connection. 
+
+- The backlog, specifies the maximum number of pending connections that can be queued up before the system starts rejecting new connection requests. 
+
+- If the queue reaches its limit and a new connection attempt is made, the client might receive an error such as ECONNREFUSED, which indicates that the server cannot accept any more connections at that time.
+
+When a server calls listen(), it transitions the socket into a *passive mode*, which means that the server is no longer attempting to establish connections but instead is waiting for incoming connection requests from clients.
+
+After calling listen(), the server is effectively saying, *"I'm ready to accept incoming connections."* It waits for clients to attempt to connect to the server.
+
+
+
+Now we can test the server and start it to listen on the specified PORT.
+SO lets create a server.c file and add all these functionalities to the server file.
 
 
