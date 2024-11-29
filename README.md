@@ -184,3 +184,10 @@ Other flags, we can use are:
 And Finally **STEP 8** and **STEP 9**
 ## Close the connection and Go back to blocking on Accept
 
+After a server has responded to a client’s request, it typically closes the connection to signal that the communication is complete. This is done using the close() system call in socket programming.
+
+Closing the socket helps release system resources that were allocated for that connection. If the server expects to handle multiple clients, the server will continue to accept new connections after closing the current one.
+
+In the context of TCP:
+- The client and server maintain a connection while they exchange data.
+- Once the data exchange is complete, the server closes the connection (or the client might close the connection).

@@ -13,6 +13,7 @@
 #include "accept_connections.c"
 #include "read_data_from_client.c"
 #include "respond.c"    
+#include "close_connection.c"
 
 const int PORT = 8080;
 const int backlog = 3;
@@ -44,7 +45,7 @@ int main(){
 
     // Close the socket after testing
     printf("Closing the Server ...\n");
-    close(sockfd);
+    close_connection(sockfd);
     
     return 0;
 
