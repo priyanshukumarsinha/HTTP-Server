@@ -12,6 +12,7 @@
 #include "listen_PORT.c"
 #include "accept_connections.c"
 #include "read_data_from_client.c"
+#include "respond.c"    
 
 const int PORT = 8080;
 const int backlog = 3;
@@ -36,6 +37,10 @@ int main(){
 
     // read data from the client
     read_data_from_client(new_socket, BUFFER_SIZE);
+
+    // Respond
+    char* msg = "Hello from server";
+    respond(new_socket, msg);
 
     // Close the socket after testing
     printf("Closing the Server ...\n");

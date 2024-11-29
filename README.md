@@ -158,3 +158,29 @@ Here,
 - **read() function**: This reads up to 1024 bytes (or whatever you specify as the second argument) from the new_socket into the buffer. It returns the number of bytes read, which is stored in *valread*. If the return value is 0, it means the client has closed the connection. If it's -1, it indicates an error.
 
 
+Now Lets move to **STEP 6**
+## Figure out how to respond
+Since we are only responding with a string for now. So lets move forward.
+
+Now Lets move to **STEP 7**
+## Write back on the connected socket
+
+In STEP 7, your goal is to respond to the client after successfully receiving data from them. This involves sending a message back to the connected socket using the send() function.
+
+In C, you can use the send() function to send data through a socket:
+```C
+ssize_t send(int sockfd, const void *buffer, size_t len, int flags);
+```
+
+Here, 
+- **buffer**: The buffer that holds the data you want to send (this could be a string, like "Hello").
+- **len**: The length of the data (usually, the length of the string or buffer).
+- **flags**: Typically set to 0 for no special behavior (other values can be used for different socket behaviors, but 0 is standard for a basic send).
+
+Other flags, we can use are:
+![alt text](image-3.png)
+
+
+And Finally **STEP 8** and **STEP 9**
+## Close the connection and Go back to blocking on Accept
+
