@@ -1,4 +1,3 @@
-#include <stdlib.h>
 
 /**
  * @brief Binds the given socket to the provided address and port.

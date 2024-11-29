@@ -121,6 +121,6 @@ After calling listen(), the server is effectively saying, *"I'm ready to accept 
 
 
 Now we can test the server and start it to listen on the specified PORT.
-SO lets create a server.c file and add all these functionalities to the server file.
+So lets create a server.c file and add all these functionalities to the server file.
 
 

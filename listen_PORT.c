@@ -13,13 +13,13 @@
  * @return int        Returns 0 if successful, or exits with failure if the listen() call fails.
  */
 
-int listen_PORT(int PORT, int sockfd, int backlog=3){
+int listen_PORT(int PORT, int sockfd, int backlog){
 
     // Try to listen on the given socket with the specified backlog
     if (listen(sockfd, backlog) < 0) {
         perror("listen");
         exit(EXIT_FAILURE);
     }
-    printf("The Server is listening at PORT: %d", PORT);
+    printf("The Server is listening at PORT: %d\n", PORT);
     return 0;
 }
