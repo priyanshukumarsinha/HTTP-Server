@@ -1,23 +1,29 @@
-#include <sys/socket.h>  // For socket(), connect(), bind(), listen(), accept()
-#include <stdio.h>       // For printf(), perror()
-#include <netinet/in.h>  // For struct sockaddr_in, htons, INADDR_ANY
-#include <string.h>       // For memset
-#include <arpa/inet.h>    // For INADDR_ANY
-#include <stdlib.h>
-#include <unistd.h> // For close()
+/**
+ * @brief Main entry point for the server application.
+ * 
+ * This function implements a simple TCP server that performs the following actions:
+ * - Creates a socket (IPv4, TCP).
+ * - Defines and binds the server address to the socket.
+ * - Listens for incoming client connections.
+ * - Accepts client connections and reads data from the client.
+ * - Responds to the client with a message.
+ * - Closes the connection after each communication.
+ * 
+ * The server continuously accepts new connections, reads data from clients, 
+ * responds with a message, and then closes the connection.
+ * 
+ * @return int Returns 0 if the program exits successfully. 
+ * 
+ * Future improvements may include:
+ * - Handling multiple connections simultaneously (e.g., using `fork()` or multi-threading).
+ * - Using proper error handling and logging mechanisms.
+ * - Implementing more secure communication using SSL/TLS.
+ * - Adding better memory management and optimization.
+ * - Implementing a more advanced protocol for communication (e.g., HTTP, custom protocol).
+ * - Refactoring the server into a modular structure for better scalability.
+ */
 
-#include "create_socket.c"
-#include "add_str.c"
-#include "bind_socket.c"
-#include "listen_PORT.c"
-#include "accept_connections.c"
-#include "read_data_from_client.c"
-#include "respond.c"    
-#include "close_connection.c"
-
-const int PORT = 8080;
-const int backlog = 3;
-const int BUFFER_SIZE = 1024;
+#include "headers.c"
 
 int main(){
 
@@ -33,20 +39,24 @@ int main(){
     // Start listening for incoming connections
     listen_PORT(PORT, sockfd, backlog);
 
-    // The server can accept incoming connections here 
-    int new_socket = accept_connections(sockfd, (struct sockaddr *)&server_addr);
+    while(1){
+        // The server can accept incoming connections here 
+        int new_socket = accept_connections(sockfd, (struct sockaddr *)&server_addr);
 
-    // read data from the client
-    read_data_from_client(new_socket, BUFFER_SIZE);
+        // read data from the client
+        read_data_from_client(new_socket, BUFFER_SIZE);
 
-    // Respond
-    char* msg = "Hello from server";
-    respond(new_socket, msg);
+        // Respond
+        char* msg = "Hello from server";
+        respond(new_socket, msg);
 
-    // Close the socket after testing
-    printf("Closing the Server ...\n");
-    close_connection(sockfd);
-    
+        // Close the socket after testing
+        printf("Closing the Server ...\n");
+        close_connection(sockfd);
+    }
+
+    // closing the listening socket
+    close(sockfd);
     return 0;
 
 }

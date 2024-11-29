@@ -20,6 +20,7 @@ int accept_connections(int server_fd, struct sockaddr *address){
     new_socket = accept(server_fd, address, &address_len);
     if(new_socket < 0){
         perror("accept");
+        printf("file descriptro : %d\n", server_fd);
         exit(EXIT_FAILURE);
     }
 
