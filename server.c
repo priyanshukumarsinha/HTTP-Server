@@ -11,9 +11,11 @@
 #include "bind_socket.c"
 #include "listen_PORT.c"
 #include "accept_connections.c"
+#include "read_data_from_client.c"
 
 const int PORT = 8080;
 const int backlog = 3;
+const int BUFFER_SIZE = 1024;
 
 int main(){
 
@@ -30,7 +32,10 @@ int main(){
     listen_PORT(PORT, sockfd, backlog);
 
     // The server can accept incoming connections here 
-    accept_connections(sockfd, (struct sockaddr *)&server_addr);
+    int new_socket = accept_connections(sockfd, (struct sockaddr *)&server_addr);
+
+    // read data from the client
+    read_data_from_client(new_socket, BUFFER_SIZE);
 
     // Close the socket after testing
     printf("Closing the Server ...\n");

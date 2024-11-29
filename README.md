@@ -140,5 +140,21 @@ In the same way, the server is "waiting" for a client to "arrive" before it can 
 accept(server_fd, (struct sockaddr*)&address,&addrlen)
 ```
 
+Now Lets move to **STEP 5**
+## Read on the connected socket
+
+Once the connection between the client and server has been established, the server can start reading data from the client. 
+
+This is typically done using the read() function on the socket that was returned by accept(). The read() function reads data sent by the client over the established connection.
+
+```C
+valread = read(new_socket, buffer, 1024 - 1); // subtract 1 for the null terminator at the end
+printf("%s\n", buffer);
+```
+
+Here,
+- **buffer**: This is a character array (or buffer) that holds the data read from the socket. The server will store the incoming data here.
+- **1024-1**: The read() function reads up to the number of bytes specified. The buffer size is 1024, but we subtract 1 to ensure there’s space for the null terminator \0, which is required to mark the end of the string.
+- **read() function**: This reads up to 1024 bytes (or whatever you specify as the second argument) from the new_socket into the buffer. It returns the number of bytes read, which is stored in *valread*. If the return value is 0, it means the client has closed the connection. If it's -1, it indicates an error.
 
 
