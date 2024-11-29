@@ -59,7 +59,9 @@ Now Let us move to **STEP 2**
 Binding a socket to an address means associating it with a specific IP address and port so it can send and receive data. This is especially important for server sockets, as clients need to know where to connect.
 
 So first we need to set up the address structure.
-The *sockaddr_in* structure is used to specify the socket's address properties, such as IP address, port, and address family.
+The *sockaddr_in* structure is used to specify the socket's address properties, such as IP address, port, and address family for IPv4.
+
+For IPv6, the address structure is struct sockaddr_in6 instead of struct sockaddr_in. This structure is used to store IPv6 addresses and associated information.
 
 To define and initialize the sockaddr_in structure:
 ```C
@@ -70,6 +72,7 @@ memset(&server_addr, 0, sizeof(server_addr)); //This clears the structure
 
 server_addr.sin_family = AF_INET;            // IPv4
 server_addr.sin_port = htons(PORT);          // Port number (use htons for network byte order)
+// When you set the port number in sockaddr_in, remember to use htons() to ensure the port is in network byte order.
 
 // To Bind to a Specific IP Address
 // server_addr.sin_addr.s_addr = inet_addr("127.0.0.1"); 
@@ -80,3 +83,19 @@ server_addr.sin_addr.s_addr = INADDR_ANY;    // IP address (localhost in this ca
 // (e.g., 127.0.0.1 for localhost and any other assigned IP addresses).
 
 ```
+
+
+
+Once the socket is created and the address structure (sockaddr_in) is defined, the next step is to bind the socket to a specific address and port. This is done using the bind() function.
+
+The function prototype is:
+````C
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+```
+
+Here,
+- **sockfd**: The socket file descriptor returned from the socket() function. This identifies the socket you want to bind.
+- **addr**: A pointer to a struct sockaddr (usually struct sockaddr_in for IPv4) that contains the address to bind the socket to. This structure typically includes the IP address and port number.
+- **addrlen**: The size of the address structure (struct sockaddr_in), which is typically sizeof(struct sockaddr_in). This tells the bind() function how much memory to read when accessing the address information.
+
+

@@ -25,6 +25,8 @@ struct sockaddr_in defineAddress(int addr_family = AF_INET, int PORT = 8080, in_
     server_addr.sin_port = htons(PORT);
     server_addr.sin_addr.s_addr = any_address; 
 
+    printf("Adresses Structure defined successfully \n");
+
     return server_addr;
 }
 

@@ -14,5 +14,7 @@ int createSocket(int domain = AF_INET, int type = SOCK_STREAM, int protocol= 0){
         perror("Socket Creation Failed");
         return -1;
     }
+
+    printf("Socket created Successfully: %d\n", sockfd);
     return sockfd;
 }
