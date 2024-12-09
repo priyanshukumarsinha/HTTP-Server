@@ -4,6 +4,16 @@ HTTP (Hypertext Transfer Protocol) is the foundation of data communication on th
 
 ---
 
+## Objectives
+
+1. Understand the core concepts of HTTP and socket programming.
+2. Implement an HTTP server in C using sockets.
+3. Provide clear examples to demonstrate each step of socket programming.
+4. Enable multithreading to handle concurrent client requests.
+5. Design the code to be modular and reusable for future scalability.
+
+---
+
 ## Steps to Cover for Socket Programming:
 
 1. Create a socket
@@ -44,6 +54,16 @@ int sockfd = socket(domain, type, protocol);
   - `SOCK_DGRAM`: Uses UDP, which is faster but doesn’t guarantee reliability.
 - **`protocol`**: Typically set to `0`, allowing the default protocol for the specified domain and type to be used.
 
+### Example:
+
+```c
+int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+if (sockfd == -1) {
+    perror("Socket creation failed");
+    exit(EXIT_FAILURE);
+}
+```
+
 ### Important Details:
 
 - If the `socket()` call **succeeds**, `sockfd` will be a **positive integer** representing the socket’s file descriptor.
@@ -79,6 +99,15 @@ Use the `bind()` function to bind the socket to an address:
 int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 ```
 
+### Example:
+
+```c
+if (bind(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+    perror("Bind failed");
+    exit(EXIT_FAILURE);
+}
+```
+
 ### Parameters:
 
 - **`sockfd`**: Socket file descriptor.
@@ -99,6 +128,15 @@ int listen(int sockfd, int backlog);
 
 - **`backlog`**: Maximum number of pending connections that can be queued.
 
+### Example:
+
+```c
+if (listen(sockfd, 5) < 0) {
+    perror("Listen failed");
+    exit(EXIT_FAILURE);
+}
+```
+
 Calling `listen()` transitions the server socket into passive mode, waiting for connection requests.
 
 ---
@@ -112,8 +150,14 @@ When the server calls the `accept()` function, it enters a waiting state (blocks
 - `accept()` returns a new socket descriptor representing the communication channel with the client.
 - Use this new socket descriptor for data exchange with the client.
 
+### Example:
+
 ```c
-int new_socket = accept(server_fd, (struct sockaddr *)&address, &addrlen);
+int new_socket = accept(sockfd, (struct sockaddr *)&client_addr, &addrlen);
+if (new_socket < 0) {
+    perror("Accept failed");
+    exit(EXIT_FAILURE);
+}
 ```
 
 ---
@@ -133,11 +177,29 @@ printf("%s\n", buffer);
 - **`1024-1`**: Ensures space for the null terminator (`\0`).
 - **`read()`**: Returns the number of bytes read. A return value of `0` indicates the client has closed the connection.
 
+### Example:
+
+```c
+char buffer[1024] = {0};
+int valread = read(new_socket, buffer, sizeof(buffer));
+printf("Client: %s\n", buffer);
+```
+
 ---
 
 ## Step 6: Figure Out How to Respond
 
 Decide on the server’s response based on the data received. This step varies depending on the application logic.
+
+### Example:
+
+If the server receives "Hello":
+
+```c
+if (strcmp(buffer, "Hello") == 0) {
+    send(new_socket, "Hi there!", strlen("Hi there!"), 0);
+}
+```
 
 ---
 
@@ -154,6 +216,12 @@ ssize_t send(int sockfd, const void *buffer, size_t len, int flags);
 - **`buffer`**: Data to send (e.g., a string).
 - **`len`**: Length of the data.
 - **`flags`**: Set to `0` for standard behavior.
+
+### Example:
+
+```c
+send(new_socket, "HTTP/1.1 200 OK\r\n\r\nHello, World!", 40, 0);
+```
 
 ![Send Flags](image-3.png)
 
@@ -206,6 +274,24 @@ HTTP follows a request-response model where the client sends a request, and the 
 - **404 Not Found**: Requested resource does not exist.
 - **500 Internal Server Error**: Server encountered an error.
 
+### Example:
+
+Client sends:
+
+```
+GET /home HTTP/1.1
+Host: localhost
+```
+
+Server responds:
+
+```
+HTTP/1.1 200 OK
+Content-Type: text/plain
+
+Welcome to the Home Page!
+```
+
 ---
 
 ## Handling URL Routes and Methods
@@ -215,7 +301,7 @@ To handle different routes and HTTP methods dynamically:
 1. **Parse the Request**: Extract the URL and method from the client request string.
 2. **Route the Request**: Compare the extracted route and method against predefined routes.
 
-Example Code for Parsing:
+### Example Code for Parsing:
 
 ```c
 char *method = strtok(buffer, " ");
@@ -285,3 +371,28 @@ int main() {
 - Ensure thread safety when accessing shared resources.
 
 ---
+
+## Future Improvements
+
+1. **Docker Integration**:
+
+   - Create a Dockerfile to containerize the HTTP server application.
+   - Ensure compatibility with different environments for easy deployment.
+
+2. **Code Modularization**:
+
+   - Refactor the code into reusable functions and modules.
+   - Create a library for socket-based HTTP server functionalities.
+
+3. **Logging and Monitoring**:
+
+   - Implement logging for requests and errors.
+   - Add monitoring for server performance and resource usage.
+
+4. **HTTPS Support**:
+
+   - Integrate SSL/TLS for secure communication.
+
+5. **Scalability**:
+   - Add load balancing for handling large numbers of concurrent requests.
+   - Optimize thread pool management.
