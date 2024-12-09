@@ -2,6 +2,7 @@
   "C_Cpp.errorSquiggles": "disabled",
   "files.associations": {
     "types.h": "c",
-    "http_server.h": "c"
+    "http_server.h": "c",
+    "response.h": "c"
   }
 }

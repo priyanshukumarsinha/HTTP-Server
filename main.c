@@ -10,6 +10,7 @@
 
 
 #include "HTTP_Server.h"
+#include "Response.h"
 
 int main() {
 	// initiate HTTP_Server
@@ -32,9 +33,9 @@ int main() {
 		// template
 		// stores the path to the file to be served
 		// served means the file is sent to the client
-		char template[100] = "";
+		char template[100] = "index.html";
 
-		char *response_data = "Hello from server";
+		char *response_data = render_static_file(template);
 		char http_header[4096] = "HTTP/1.1 200 OK\r\n";
 
 		strcat(http_header, "Content-Type: text/html\r\n\r\n"); // Content type for HTML

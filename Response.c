@@ -10,7 +10,7 @@ char * render_static_file(char *filename){
         return NULL;
     }
     else{
-        print("%s does exist\n", filename);
+        printf("%s does exist\n", filename);
     }
 
     fseek(file, 0, SEEK_END);
