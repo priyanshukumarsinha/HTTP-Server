@@ -16,5 +16,34 @@ int main() {
 	HTTP_Server http_server;
 	init_server(&http_server, 6969);
 
+	// accept connections
+	int client_socket;
+	while (1) {
+		client_socket = accept(http_server.socket, NULL, NULL);
+
+		// read data from client
+		char client_msg[1024];
+		read(client_socket, client_msg, sizeof(client_msg)); 
+		// returns the number of bytes read (0 if no data is read) or -1 if an error occurs
+		// no use of the return value here
+
+		printf("Client: %s\n", client_msg);
+
+		char *response_data = "Hello from server";
+		char http_header[4096] = "HTTP/1.1 200 OK\r\n\r\n";
+
+		strcat(http_header, response_data);
+		strcat(http_header, "\r\n\r\n");
+
+		// respond to client
+		send(client_socket, http_header, sizeof(http_header), 0);
+		printf("Response sent successfully: %s\n", http_header);
+		// close(client_socket);
+		// free(response_data);
+
+	}
+
+
+
     return 0;
 }
