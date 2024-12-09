@@ -1,19 +1,22 @@
-all: server2
+CC=gcc
+CFLAGS=-Iinclude
+DEPS = HTTP_Server.h
+exec = server.o
+sources = $(wildcard src/*.c)
+objects = $(sources:.c=.o)
+flags = -g -Wall -lm -ldl -fPIC -rdynamic -I./include
+# flags = -I./include
 
-server2: main.o HTTP_Server.o Response.o Routes.o
-	gcc main.o HTTP_Server.o Response.o Routes.o -o server2
+$(exec): $(objects)
+	gcc $(objects) $(flags) -o $(exec)
 
-main.o: main.c HTTP_Server.h Response.h Routes.h
-	gcc -c main.c
+%.o: %.c %.h
+	gcc -c $(flags) $< -o $@
 
-HTTP_Server.o: HTTP_Server.c HTTP_Server.h Routes.h
-	gcc -c HTTP_Server.c
-
-Response.o: Response.c Response.h Routes.h
-	gcc -c Response.c
-
-Routes.o: Routes.c Routes.h
-	gcc -c Routes.c
 
 clean:
-	rm -f *.o server2
+	-rm *.out
+	-rm *.o
+	-rm *.a
+	-rm src/*.a
+	-rm src/*.o

@@ -44,9 +44,33 @@ int main() {
 
 
 		// parsing client socket header to get HTTP method, route
-		char *method = "";
-		char *urlRoute = "";
+		char *method = NULL;
+		char *urlRoute = NULL;
 		
+		char *client_http_header = strtok(client_msg, "\n");
+			
+		printf("\n\n%s\n\n", client_http_header);
+
+		char *header_token = strtok(client_http_header, " ");
+		
+		int header_parse_counter = 0;
+
+		while (header_token != NULL) {
+
+			switch (header_parse_counter) {
+				case 0:
+					method = header_token;
+					break;
+				case 1:
+					urlRoute = header_token;
+					break;
+			}
+			header_token = strtok(NULL, " ");
+			header_parse_counter++;
+		}
+
+		printf("The method is %s\n", method);
+		printf("The route is %s\n", urlRoute);
 
 		// template
 		// stores the path to the file to be served
@@ -79,8 +103,7 @@ int main() {
 		send(client_socket, http_header, sizeof(http_header), 0);
 		printf("Response sent successfully: %s\n", http_header);
 		close(client_socket);
-		printf("Reached Here");
-		// free(response_data);
+		free(response_data);
 
 	}
 
