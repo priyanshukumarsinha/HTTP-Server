@@ -29,9 +29,15 @@ int main() {
 
 		printf("Client: %s\n", client_msg);
 
-		char *response_data = "Hello from server";
-		char http_header[4096] = "HTTP/1.1 200 OK\r\n\r\n";
+		// template
+		// stores the path to the file to be served
+		// served means the file is sent to the client
+		char template[100] = "";
 
+		char *response_data = "Hello from server";
+		char http_header[4096] = "HTTP/1.1 200 OK\r\n";
+
+		strcat(http_header, "Content-Type: text/html\r\n\r\n"); // Content type for HTML
 		strcat(http_header, response_data);
 		strcat(http_header, "\r\n\r\n");
 
