@@ -38,7 +38,8 @@ int main() {
 		// respond to client
 		send(client_socket, http_header, sizeof(http_header), 0);
 		printf("Response sent successfully: %s\n", http_header);
-		// close(client_socket);
+		close(client_socket);
+		printf("Reached Here");
 		// free(response_data);
 
 	}
