@@ -11,6 +11,7 @@
 
 #include "HTTP_Server.h"
 #include "Response.h"
+#include "Routes.h"
 
 int main() {
 	// initiate HTTP_Server
@@ -19,6 +20,17 @@ int main() {
 
 	// accept connections
 	int client_socket;
+
+	// registering Routes
+	struct Route * route = initRoute("/", "index.html"); 
+	addRoute(route, "/about", "about.html");
+
+	printf("\n====================================\n");
+	printf("=========ALL VAILABLE ROUTES========\n");
+	// display all available routes
+	inorder(route);
+
+
 	while (1) {
 		client_socket = accept(http_server.socket, NULL, NULL);
 
@@ -30,12 +42,33 @@ int main() {
 
 		printf("Client: %s\n", client_msg);
 
+
+		// parsing client socket header to get HTTP method, route
+		char *method = "";
+		char *urlRoute = "";
+		
+
 		// template
 		// stores the path to the file to be served
 		// served means the file is sent to the client
-		char template[100] = "index.html";
+		char template[100] = "";
+		
+		if (strstr(urlRoute, "/static/") != NULL) {
+			//strcat(template, urlRoute+1);
+			strcat(template, "static/index.css");
+		}else {
+			struct Route * destination = search(route, urlRoute);
+			strcat(template, "templates/");
 
-		char *response_data = render_static_file(template);
+			if (destination == NULL) {
+				strcat(template, "404.html");
+			}else {
+				strcat(template, destination->value);
+			}
+		}
+
+		char * response_data = render_static_file(template);
+
 		char http_header[4096] = "HTTP/1.1 200 OK\r\n";
 
 		strcat(http_header, "Content-Type: text/html\r\n\r\n"); // Content type for HTML
